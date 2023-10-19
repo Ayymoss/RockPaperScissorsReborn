@@ -1,0 +1,27 @@
+﻿@using Radzen
+@using RockPaperScissors.Models
+@using Humanizer
+
+<RadzenCard>
+    <RadzenStack Orientation="Orientation.Vertical">
+        <RadzenText Text="Leaderboard" TextStyle="TextStyle.DisplayH6" class="rz-mb-0"/>
+        <RadzenDataGrid AllowColumnResize="true" PageSize="10" Density="Density.Compact" Data="@_leaderboardContexts" 
+                        AllowFiltering="true" AllowSorting="true" FilterMode="FilterMode.Advanced"
+                        TItem="LeaderboardContext" Style="min-height: 200px">
+            <Columns>
+                <RadzenDataGridColumn TItem="LeaderboardContext" Property="UserName" Title="Name" MinWidth="120px"/>
+                <RadzenDataGridColumn TItem="LeaderboardContext" Property="Streak" Title="Streak" MinWidth="120px" SortOrder="SortOrder.Descending"/>
+                <RadzenDataGridColumn TItem="LeaderboardContext" Property="Duration" Title="Time" MinWidth="120px">
+                    <Template Context="data">
+                        @data.Duration.Humanize()
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LeaderboardContext" Property="Submitted" Title="Submitted" MinWidth="120px">
+                    <Template Context="data">
+                        @data.Submitted.Humanize()
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenStack>
+</RadzenCard>

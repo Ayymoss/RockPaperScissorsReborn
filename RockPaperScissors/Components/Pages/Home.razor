@@ -1,0 +1,23 @@
+﻿@page "/"
+@using Radzen
+@attribute [RenderModeInteractiveServer]
+
+<PageTitle>Rock Paper Scissors</PageTitle>
+
+<RadzenRow JustifyContent="JustifyContent.Center">
+    <RadzenColumn SizeSM="12" SizeMD="3" SizeXX="3">
+        <Game/>
+    </RadzenColumn>
+    <RadzenColumn SizeSM="12" SizeMD="3" SizeXX="3">
+        <RadzenRow>
+            <RadzenStack Orientation="Orientation.Vertical">
+                <RadzenColumn Size="6">
+                    <UserName/>
+                </RadzenColumn>
+                <RadzenColumn Size="6">
+                    <Leaderboard/>
+                </RadzenColumn>
+            </RadzenStack>
+        </RadzenRow>
+    </RadzenColumn>
+</RadzenRow>
