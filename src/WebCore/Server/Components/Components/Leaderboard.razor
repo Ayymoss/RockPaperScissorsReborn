@@ -1,0 +1,28 @@
+﻿@using Radzen
+@using Humanizer
+@using RockPaperScissors.Core.Domain.Entities
+@using RockPaperScissors.Core.Domain.ValueObjects
+
+<RadzenCard>
+    <RadzenStack Orientation="Orientation.Vertical">
+        <RadzenText Text="Leaderboard" TextStyle="TextStyle.DisplayH6" class="rz-mb-0"/>
+        <RadzenDataGrid
+            @ref="_dataGrid" TItem="Core.Business.DTOs.Leaderboard" IsLoading="@_isLoading" Count="@_count" Data="@_playerTable"
+            LoadData="@LoadData" AllowColumnResize="true" PageSize="10" Density="Density.Compact" AllowSorting="true" Style="min-height: 200px">
+            <Columns>
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="UserName" Title="Name" MinWidth="120px"/>
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Streak" Title="Streak" MinWidth="120px" SortOrder="SortOrder.Descending"/>
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Duration" Title="Time" MinWidth="120px">
+                    <Template Context="data">
+                        @data.Duration.Humanize()
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Submitted" Title="Submitted" MinWidth="120px">
+                    <Template Context="data">
+                        @data.Submitted.Humanize()
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenStack>
+</RadzenCard>

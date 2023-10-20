@@ -1,0 +1,49 @@
+﻿@using Radzen
+
+<RadzenCard>
+    <RadzenStack Orientation="Orientation.Vertical">
+        <RadzenText Text="Player Info" TextStyle="TextStyle.DisplayH6" class="rz-mb-0"/>
+        <RadzenStack Orientation="Orientation.Vertical">
+            <RadzenRow AlignItems="AlignItems.Center">
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenLabel Text="Username"/>
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6">
+                    @if (!Player.IsPlayerDataLoaded)
+                    {
+                        <RadzenStack Orientation="Orientation.Vertical">
+                            <RadzenTextBox Change="@(UpdateUserName)"/>
+                            @if (!string.IsNullOrWhiteSpace(_nameError))
+                            {
+                                <RadzenText Text="@_nameError" class="rz-mb-0"/>
+                            }
+                        </RadzenStack>
+                    }
+                    else
+                    {
+                        <RadzenText Text="@Player.UserName" class="rz-mb-0"/>
+                    }
+                </RadzenColumn>
+            </RadzenRow>
+            @if (Player.IsPlayerDataLoaded)
+            {
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenLabel Text="Best Streak"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenText Text="@Player.BestStreak.ToString()" class="rz-mb-0"/>
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenLabel Text="Placement"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="12" SizeMD="6">
+                        <RadzenText Text="<Placeholder>" class="rz-mb-0"/>
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+        </RadzenStack>
+    </RadzenStack>
+</RadzenCard>
