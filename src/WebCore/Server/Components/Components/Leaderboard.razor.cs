@@ -11,6 +11,7 @@ namespace RockPaperScissors.WebCore.Server.Components.Components;
 
 public partial class Leaderboard
 {
+    // TODO: Reload this if a new player is on the leaderboard.
     [Inject] private IMediator Mediator { get; set; }
 
     private RadzenDataGrid<Core.Business.DTOs.Leaderboard> _dataGrid;

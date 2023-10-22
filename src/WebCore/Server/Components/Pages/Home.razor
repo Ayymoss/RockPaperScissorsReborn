@@ -4,20 +4,20 @@
 
 <PageTitle>Rock Paper Scissors</PageTitle>
 
-<RadzenRow JustifyContent="JustifyContent.Center">
-    <RadzenColumn SizeSM="12" SizeMD="3" SizeXX="3">
-        <Game/>
-    </RadzenColumn>
-    <RadzenColumn SizeSM="12" SizeMD="3" SizeXX="3">
-        <RadzenRow>
-            <RadzenStack Orientation="Orientation.Vertical">
-                <RadzenColumn Size="6">
-                    <UserName/>
+<CascadingValue Value="_player">
+    <RadzenRow JustifyContent="JustifyContent.Center">
+        <RadzenColumn SizeSM="12" SizeMD="4">
+            <Game OnPlayerChanged="OnPlayerUpdated"/>
+        </RadzenColumn>
+        <RadzenColumn SizeSM="12" SizeMD="4">
+            <RadzenRow>
+                <RadzenColumn SizeSM="12">
+                    <Profile OnPlayerChanged="OnPlayerUpdated"/>
                 </RadzenColumn>
-                <RadzenColumn Size="6">
+                <RadzenColumn SizeSM="12">
                     <Leaderboard/>
                 </RadzenColumn>
-            </RadzenStack>
-        </RadzenRow>
-    </RadzenColumn>
-</RadzenRow>
+            </RadzenRow>
+        </RadzenColumn>
+    </RadzenRow>
+</CascadingValue>

@@ -8,55 +8,60 @@ namespace RockPaperScissors.Core.Infrastructure.Repositories;
 
 public class LeaderboardRepository(IDbContextFactory<DataContext> contextFactory) : ILeaderboardRepository
 {
-    public async Task<Player?> GetPlayerDataAsync(Guid guid, CancellationToken cancellationToken)
+    public async Task<int> GetPlayerStreakAsync(Guid guid, CancellationToken cancellationToken)
     {
         await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
-        var player = await context.Leaderboards
-            .Where(x => x.Guid == guid)
-            .Select(x => new Player
-            {
-                UserName = x.UserName,
-                Guid = guid,
-                BestStreak = x.Streak,
-            }).FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        return player;
+
+        var playerStreak = await context.Leaderboards
+            .Where(p => p.Player.Guid == guid)
+            .Select(p => p.Streak)
+            .FirstOrDefaultAsync(cancellationToken);
+        return playerStreak;
     }
 
-    public async Task<int> CreatePlayerAsync(Player player, CancellationToken cancellationToken)
+    public async Task<int> GetPlayersWithBetterStreakAsync(int playerStreak, CancellationToken cancellationToken)
     {
         await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
-        var leaderboard = new EFLeaderboard
-        {
-            Id = 0,
-            Guid = player.Guid,
-            UserName = player.UserName,
-            Streak = player.CurrentGame?.Streak ?? 0,
-            Duration = player.CurrentGame?.Duration,
-            Submitted = player.CurrentGame?.Submitted,
-        };
-        context.Leaderboards.Add(leaderboard);
-        await context.SaveChangesAsync(cancellationToken);
-        return leaderboard.Id;
+
+        var playersWithBetterStreak = await context.Leaderboards
+            .CountAsync(p => p.Streak > playerStreak, cancellationToken);
+        return playersWithBetterStreak;
     }
 
-    public async Task UpdatePlayerAsync(Player player, CancellationToken cancellationToken)
+    public async Task<IEnumerable<EFLeaderboard>> GetPlayersWithSameStreakAsync(int playerStreak, CancellationToken cancellationToken)
     {
         await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
-        if (player.CurrentGame is null) return;
+
+        var sameStreakPlayers = await context.Leaderboards
+            .Where(p => p.Streak == playerStreak)
+            .Include(p => p.Player)
+            .OrderBy(p => p.Duration)
+            .ToListAsync(cancellationToken);
+        return sameStreakPlayers;
+    }
+
+    public async Task<EFLeaderboard?> GetLeaderboardAsync(Guid guid, CancellationToken cancellationToken)
+    {
+        await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
 
         var leaderboard = await context.Leaderboards
-            .Where(x => x.Guid == player.Guid)
-            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        if (leaderboard is null) return;
+            .Where(p => p.Player.Guid == guid)
+            .SingleOrDefaultAsync(cancellationToken);
+        return leaderboard;
+    }
 
-        if (leaderboard.Streak < player.CurrentGame.Streak)
-        {
-            leaderboard.Streak = player.CurrentGame.Streak;
-            leaderboard.Duration = player.CurrentGame.Duration;
-            leaderboard.Submitted = player.CurrentGame.Submitted;
-        }
+    public async Task<int> AddOrUpdateLeaderboardAsync(EFLeaderboard leaderboard, CancellationToken cancellationToken)
+    {
+        await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
 
-        context.Leaderboards.Update(leaderboard);
+        var efLeaderboard = await context.Leaderboards
+            .Where(x => x.Id == leaderboard.Id)
+            .AnyAsync(cancellationToken: cancellationToken);
+
+        if (efLeaderboard) context.Leaderboards.Update(leaderboard);
+        else context.Leaderboards.Add(leaderboard);
+
         await context.SaveChangesAsync(cancellationToken);
+        return leaderboard.Id;
     }
 }

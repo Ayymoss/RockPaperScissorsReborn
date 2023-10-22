@@ -13,8 +13,6 @@ using RockPaperScissors.Core.Infrastructure.Repositories.Pagination;
 using RockPaperScissors.Core.Infrastructure.SignalR;
 using RockPaperScissors.WebCore.Server.Components;
 
-// TODO Allow for restore-able Session ID
-
 var builder = WebApplication.CreateBuilder(args);
 
 #if DEBUG
@@ -26,7 +24,7 @@ builder.WebHost.ConfigureKestrel(options => { options.ListenAnyIP(8124, configur
 var configuration = SetupConfiguration.ReadConfiguration();
 
 
-configuration.DatabaseName = "RPS-Dev2";
+configuration.DatabaseName = "RPS-Dev1";
 
 builder.Services.AddDbContextFactory<DataContext>(options =>
 {
@@ -40,11 +38,11 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<ILeaderboardRepository, LeaderboardRepository>();
 builder.Services.AddScoped<IResourceQueryHelper<GetLeaderboardCommand, Leaderboard>, LeaderboardPaginationQueryHelper>();
 
-builder.Services.AddSingleton<RpsClientHub>();
-builder.Services.AddSingleton<Player>();
+builder.Services.AddScoped<RpsClientHub>();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSignalR();

@@ -3,21 +3,22 @@
 @using RockPaperScissors.Core.Domain.Entities
 @using RockPaperScissors.Core.Domain.ValueObjects
 
-<RadzenCard>
+<RadzenCard Style="width: 100%">
     <RadzenStack Orientation="Orientation.Vertical">
         <RadzenText Text="Leaderboard" TextStyle="TextStyle.DisplayH6" class="rz-mb-0"/>
-        <RadzenDataGrid
-            @ref="_dataGrid" TItem="Core.Business.DTOs.Leaderboard" IsLoading="@_isLoading" Count="@_count" Data="@_playerTable"
-            LoadData="@LoadData" AllowColumnResize="true" PageSize="10" Density="Density.Compact" AllowSorting="true" Style="min-height: 200px">
+        <RadzenDataGrid @ref="_dataGrid" TItem="Core.Business.DTOs.Leaderboard" IsLoading="@_isLoading" Count="@_count" Data="@_playerTable"
+                        LoadData="@LoadData" AllowColumnResize="true" PageSize="100" AllowAlternatingRows="false"
+                        Density="Density.Compact" Style="min-height: 100px; max-width: 100%">
             <Columns>
-                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="UserName" Title="Name" MinWidth="120px"/>
-                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Streak" Title="Streak" MinWidth="120px" SortOrder="SortOrder.Descending"/>
-                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Duration" Title="Time" MinWidth="120px">
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Rank" Width="30px" TextAlign="TextAlign.Center" Frozen="true"/>
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="UserName" Title="Name" Width="120px"/>
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Streak" Title="Streak" Width="60px" SortOrder="SortOrder.Descending"/>
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Duration" Title="Time" Width="100px">
                     <Template Context="data">
                         @data.Duration.Humanize()
                     </Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Submitted" Title="Submitted" MinWidth="120px">
+                <RadzenDataGridColumn TItem="Core.Business.DTOs.Leaderboard" Property="Submitted" Title="Submitted" Width="120px">
                     <Template Context="data">
                         @data.Submitted.Humanize()
                     </Template>
