@@ -7,7 +7,7 @@
         <RadzenStack Orientation="Orientation.Vertical">
             @if (Player?.IsPlayerDataLoaded ?? false)
             {
-                <RadzenFieldset Text="Player Card">
+                <RadzenFieldset Text="Player">
                     <RadzenRow AlignItems="AlignItems.Center">
                         <RadzenColumn Size="6">
                             <RadzenLabel Text="Username"/>
@@ -21,7 +21,7 @@
                             <RadzenLabel Text="Chips"/>
                         </RadzenColumn>
                         <RadzenColumn Size="6">
-                            <RadzenText Text="@Player.Chips.ToString()" class="rz-mb-0"/>
+                            <RadzenText Text="@Player.Chips.ToString("N0")" class="rz-mb-0"/>
                         </RadzenColumn>
                     </RadzenRow>
                     <RadzenRow AlignItems="AlignItems.Center">
@@ -41,27 +41,27 @@
                         </RadzenColumn>
                     </RadzenRow>
                 </RadzenFieldset>
-                @if (Player?.CurrentGame is not null)
-                {
-                    <RadzenFieldset Text="Game Card">
+                <RadzenFieldset Text="Online">
+                    <RadzenRow AlignItems="AlignItems.Center">
+                        <RadzenColumn Size="6">
+                            <RadzenLabel Text="Players"/>
+                        </RadzenColumn>
+                        <RadzenColumn Size="6">
+                            <RadzenText Text="@OnlinePlayers.ToString()" class="rz-mb-0"/>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    @if (LatencyInMilliseconds is not 0)
+                    {
                         <RadzenRow AlignItems="AlignItems.Center">
                             <RadzenColumn Size="6">
-                                <RadzenLabel Text="Current Streak"/>
+                                <RadzenLabel Text="Ping"/>
                             </RadzenColumn>
                             <RadzenColumn Size="6">
-                                <RadzenText Text="@Player.CurrentGame.Streak.ToString()" class="rz-mb-0"/>
+                                <RadzenText Text="@LatencyInMilliseconds.ToString("N0")" class="rz-mb-0"/>
                             </RadzenColumn>
                         </RadzenRow>
-                        <RadzenRow AlignItems="AlignItems.Center">
-                            <RadzenColumn Size="6">
-                                <RadzenLabel Text="Started"/>
-                            </RadzenColumn>
-                            <RadzenColumn Size="6">
-                                <RadzenText Text="@Player.CurrentGame.GameStarted.Humanize()" class="rz-mb-0"/>
-                            </RadzenColumn>
-                        </RadzenRow>
-                    </RadzenFieldset>
-                }
+                    }
+                </RadzenFieldset>
             }
             else
             {

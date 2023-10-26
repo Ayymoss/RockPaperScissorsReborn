@@ -1,7 +1,21 @@
 ﻿namespace RockPaperScissors.Core.Domain.Enums;
 
-public static class SignalRMethods
+public enum SignalRMethods
 {
-    public const string GetConnectionId = nameof(GetConnectionId);
-    public const string OnConnectionId = nameof(OnConnectionId);
+    #region Client Methods
+
+    Pong,
+    OnMultiplayerPlayersCountUpdate,
+    OnLeaderboardUpdate,
+
+    #endregion
+
+    #region Server Methods
+
+    Ping,
+    UpdatePlayer,
+    GetOnlinePlayers,
+    NotifyGameReady
+
+    #endregion
 }

@@ -37,11 +37,7 @@ public class GetPlayerDataHandler
         var rankWithinStreak = 1;
         foreach (var leaderboard in sameStreakPlayers)
         {
-            if (leaderboard.Player.Guid == guid)
-            {
-                return playersWithBetterStreak + rankWithinStreak;
-            }
-
+            if (leaderboard.Player.Guid == guid) return playersWithBetterStreak + rankWithinStreak;
             rankWithinStreak++;
         }
 

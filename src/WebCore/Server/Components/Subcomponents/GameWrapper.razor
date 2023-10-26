@@ -1,0 +1,19 @@
+﻿@using Radzen
+@using RockPaperScissors.Core.Domain.Enums
+@attribute [RenderModeInteractiveServer]
+
+<RadzenCard>
+    @if (!Player?.IsPlayerDataLoaded ?? true)
+    {
+        <RadzenText Text="Please enter a username before continuing..." class="rz-mb-0"/>
+    }
+    else
+    {
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center">
+            <RadzenText Text="Rock Paper Scissors" TextStyle="TextStyle.DisplayH6" class="rz-mb-0"/>
+            <ChooseMode @ref="_chooseModeComponent" GameMode="_currentGameMode" OnModeSelected="HandleModeChosen"/>
+            <ComputerGame @ref="_computerGameComponent" GameMode="_currentGameMode" OnGameEnd="HandleGameEnd"/>
+            <MultiplayerGame @ref="_multiplayerGameComponent" GameMode="_currentGameMode" PlayerGuid="Player.Guid" OnGameEnd="HandleGameEnd"/>
+        </RadzenStack>
+    }
+</RadzenCard>

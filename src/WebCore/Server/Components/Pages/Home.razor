@@ -7,15 +7,15 @@
 <CascadingValue Value="_player">
     <RadzenRow JustifyContent="JustifyContent.Center">
         <RadzenColumn SizeSM="12" SizeMD="4">
-            <Game OnPlayerChanged="OnPlayerUpdated"/>
+            <GameWrapper OnPlayerChanged="OnPlayerUpdated" OnStartMultiplayer="OnMultiplayerStarted"/>
         </RadzenColumn>
         <RadzenColumn SizeSM="12" SizeMD="4">
             <RadzenRow>
                 <RadzenColumn SizeSM="12">
-                    <Profile OnPlayerChanged="OnPlayerUpdated"/>
+                    <Profile OnPlayerChanged="OnPlayerUpdated" LatencyInMilliseconds="_latencyInMilliseconds" OnlinePlayers="_onlinePlayers"/>
                 </RadzenColumn>
                 <RadzenColumn SizeSM="12">
-                    <Leaderboard/>
+                    <Leaderboard @ref="_leaderboardComponent"/>
                 </RadzenColumn>
             </RadzenRow>
         </RadzenColumn>

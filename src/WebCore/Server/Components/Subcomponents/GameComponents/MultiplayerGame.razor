@@ -1,0 +1,49 @@
+﻿@using RockPaperScissors.Core.Domain.Enums
+@using Radzen
+@using Humanizer
+@if (GameMode is GameMode.MultiplayerMatchmaking or GameMode.MultiplayerPrivate)
+{
+    @if (!_gameEnded)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center">
+            <RadzenButton Click="e => SubmitMove(GameMove.Rock)" Text="Rock"
+                          Icon="public" ButtonStyle="ButtonStyle.Info"/>
+            <RadzenButton Click="e => SubmitMove(GameMove.Paper)" Text="Paper"
+                          Icon="note" ButtonStyle="ButtonStyle.Info"/>
+            <RadzenButton Click="e => SubmitMove(GameMove.Scissors)" Text="Scissors"
+                          Icon="content_cut" ButtonStyle="ButtonStyle.Info"/> 
+            <RadzenButton Click="e => EndGame()" Text="End Game"
+                          Icon="exit" ButtonStyle="ButtonStyle.Danger"/>
+        </RadzenStack>
+
+        @if (_gameState is not null)
+        {
+            <RadzenFieldset Text="Game">
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="6">
+                        <RadzenLabel Text="Current Streak"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="6">
+                        <RadzenText Text="@_gameState.Streak.ToString()" class="rz-mb-0"/>
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow AlignItems="AlignItems.Center">
+                    <RadzenColumn Size="6">
+                        <RadzenLabel Text="Started"/>
+                    </RadzenColumn>
+                    <RadzenColumn Size="6">
+                        <RadzenText Text="@_gameState.Started.Humanize()" class="rz-mb-0"/>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenFieldset>
+        }
+    }
+    else
+    {
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+            <RadzenText>You lost!</RadzenText>
+            <RadzenText>Streak: @_gameState?.Streak</RadzenText>
+            <RadzenButton Click="ReturnToMain" Text="Menu" Icon="replay" ButtonStyle="ButtonStyle.Success"/>
+        </RadzenStack>
+    }
+}

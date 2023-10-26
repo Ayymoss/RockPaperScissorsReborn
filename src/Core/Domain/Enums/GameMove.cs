@@ -1,6 +1,6 @@
 ﻿namespace RockPaperScissors.Core.Domain.Enums;
 
-public enum RockPaperScissorsMove
+public enum GameMove
 {
     Rock,
     Paper,

@@ -4,14 +4,12 @@ using Radzen;
 using Radzen.Blazor;
 using RockPaperScissors.Core.Business.Mediatr.Commands;
 using RockPaperScissors.Core.Domain.Enums;
-using RockPaperScissors.Core.Domain.ValueObjects.Pagination;
 using SortDescriptor = RockPaperScissors.Core.Domain.ValueObjects.Pagination.SortDescriptor;
 
-namespace RockPaperScissors.WebCore.Server.Components.Components;
+namespace RockPaperScissors.WebCore.Server.Components.Subcomponents;
 
 public partial class Leaderboard
 {
-    // TODO: Reload this if a new player is on the leaderboard.
     [Inject] private IMediator Mediator { get; set; }
 
     private RadzenDataGrid<Core.Business.DTOs.Leaderboard> _dataGrid;
@@ -19,6 +17,11 @@ public partial class Leaderboard
     private bool _isLoading = true;
     private int _count;
     private string? _searchString;
+
+    public async Task ReloadData()
+    {
+        await InvokeAsync(_dataGrid.Reload);
+    }
 
     private async Task LoadData(LoadDataArgs args)
     {

@@ -1,0 +1,11 @@
+﻿@using RockPaperScissors.Core.Domain.Enums
+@using Radzen
+@if (GameMode is GameMode.Unknown)
+{
+    <RadzenButton Click="e => ChooseGameMode(GameMode.Computer)" Text="Computer"
+                  Icon="computer" ButtonStyle="ButtonStyle.Primary"/>
+    <RadzenButton Click="e => ChooseGameMode(GameMode.MultiplayerMatchmaking)" Text="Multiplayer Matchmaking"
+                  Icon="group" ButtonStyle="ButtonStyle.Info"/>
+    <RadzenButton Click="e => ChooseGameMode(GameMode.MultiplayerPrivate)" Text="Multiplayer Private Match"
+                  Icon="group" ButtonStyle="ButtonStyle.Info"/>
+}

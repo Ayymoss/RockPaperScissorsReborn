@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Components;
 using RockPaperScissors.Core.Business.Mediatr.Commands;
 using RockPaperScissors.Core.Business.Mediatr.Events;
 using RockPaperScissors.Core.Domain.ValueObjects;
-using RockPaperScissors.Core.Infrastructure.SignalR;
 
-namespace RockPaperScissors.WebCore.Server.Components.Components;
+namespace RockPaperScissors.WebCore.Server.Components.Subcomponents;
 
 public partial class Profile
 {
     [CascadingParameter] public Player? Player { get; set; }
     [Parameter] public EventCallback<Player?> OnPlayerChanged { get; set; }
+    [Parameter] public int LatencyInMilliseconds { get; set; }
+    [Parameter] public int OnlinePlayers { get; set; }
     [Inject] private ILocalStorageService LocalStorageService { get; set; }
     [Inject] private IMediator Mediator { get; set; }
 

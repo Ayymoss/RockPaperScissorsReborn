@@ -10,6 +10,7 @@ using RockPaperScissors.Core.Domain.ValueObjects;
 using RockPaperScissors.Core.Infrastructure.Context;
 using RockPaperScissors.Core.Infrastructure.Repositories;
 using RockPaperScissors.Core.Infrastructure.Repositories.Pagination;
+using RockPaperScissors.Core.Infrastructure.Services;
 using RockPaperScissors.Core.Infrastructure.SignalR;
 using RockPaperScissors.WebCore.Server.Components;
 
@@ -32,6 +33,9 @@ builder.Services.AddDbContextFactory<DataContext>(options =>
 });
 
 builder.Services.AddSingleton(configuration);
+builder.Services.AddSingleton<IPlayerCacheService, PlayerCacheService>();
+builder.Services.AddSingleton<INotificationService, SignalRNotificationService>();
+builder.Services.AddScoped<IGameLogicService, GameLogicService>();
 
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();

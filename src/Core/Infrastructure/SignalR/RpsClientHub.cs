@@ -6,14 +6,17 @@ namespace RockPaperScissors.Core.Infrastructure.SignalR;
 
 public class RpsClientHub : IAsyncDisposable
 {
-    public event Action<SessionIdInfoSignalR>? SessionIdChanged;
+    public event Action? OnPingPongReceived;
+    public event Action<int>? OnPlayerCountChanged;
+    public event Action? OnLeaderboardUpdate;
     private HubConnection? _hubConnection;
 
     public async Task InitializeAsync()
     {
         CreateHubConnection();
         await StartConnection();
-        await FetchSessionId();
+        SubscribeToHubEvents();
+        await InitialiseDefaults();
     }
 
     private void CreateHubConnection()
@@ -32,12 +35,31 @@ public class RpsClientHub : IAsyncDisposable
     {
         if (_hubConnection is not null) await _hubConnection.StartAsync();
     }
-    
-    private async Task FetchSessionId()
+
+    private void SubscribeToHubEvents()
+    {
+        _hubConnection?.On(SignalRMethods.Pong.ToString(), () => OnPingPongReceived?.Invoke());
+        _hubConnection?.On<int>(SignalRMethods.OnMultiplayerPlayersCountUpdate.ToString(), count => OnPlayerCountChanged?.Invoke(count));
+        _hubConnection?.On(SignalRMethods.OnLeaderboardUpdate.ToString(), () => OnLeaderboardUpdate?.Invoke());
+    }
+
+    private async Task InitialiseDefaults()
     {
         if (_hubConnection is null) return;
-        var onlineCount = await _hubConnection.InvokeAsync<SessionIdInfoSignalR>(SignalRMethods.GetConnectionId);
-        SessionIdChanged?.Invoke(onlineCount);
+        var onlineCount = await _hubConnection.InvokeAsync<int>(SignalRMethods.GetOnlinePlayers.ToString());
+        OnPlayerCountChanged?.Invoke(onlineCount);
+    }
+
+    public async Task PingAsync()
+    {
+        if (_hubConnection is null) return;
+        await _hubConnection.InvokeAsync(SignalRMethods.Ping.ToString());
+    }
+
+    public async Task UpdatePlayerAsync(Player player)
+    {
+        if (_hubConnection is null) return;
+        await _hubConnection.InvokeAsync(SignalRMethods.UpdatePlayer.ToString(), player);
     }
 
     public async ValueTask DisposeAsync()

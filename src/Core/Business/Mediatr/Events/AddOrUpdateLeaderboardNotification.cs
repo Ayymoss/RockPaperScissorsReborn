@@ -5,5 +5,6 @@ namespace RockPaperScissors.Core.Business.Mediatr.Events;
 
 public class AddOrUpdateLeaderboardNotification : INotification
 {
-    public Player Player { get; set; }
+    public Guid PlayerGuid { get; set; }
+    public GameState GameState { get; set; }
 }

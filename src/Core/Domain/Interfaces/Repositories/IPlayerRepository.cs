@@ -7,4 +7,5 @@ public interface IPlayerRepository
 {
     Task<EFPlayer?> GetPlayerDataAsync(Guid guid, CancellationToken cancellationToken);
     Task<int> CreatePlayerAsync(EFPlayer player, CancellationToken cancellationToken);
+    Task<int?> AdjustPlayerChipsAsync(Guid requestPlayerGuid, int requestAddChips, CancellationToken cancellationToken);
 }
